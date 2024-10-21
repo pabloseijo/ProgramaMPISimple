@@ -8,7 +8,7 @@
 #define iteraciones_totales_montecarlo 10000000
 
 double operacionIntraIntegral(double x);
-int integralMonteCarlo(int iteraciones);
+double integralMonteCarlo(int iteraciones);
 
 int main(int argc, char* argv[]) {
     int rank, size;
@@ -28,27 +28,25 @@ int main(int argc, char* argv[]) {
 
     int iteraciones_por_proceso = iteraciones_totales_montecarlo / size;
     // Cada proceso realiza una parte de las iteraciones
-    int integral_local = integralMonteCarlo(iteraciones_por_proceso);
+    double integral_local = integralMonteCarlo(iteraciones_por_proceso);
 
     // Recopilar resultados parciales de cada proceso
     double integral_total = 0.0;
-    MPI_Reduce(&integral_local, &integral_total, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&integral_local, &integral_total, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
     integral_total /= iteraciones_totales_montecarlo;  
 
     if (rank == 0) {
         // Calcular el valor de pi a partir de la integral total
-        integral_total /= size;  // Dividimos por el número de procesos para obtener la media
-        double pi = (double) 22 / 7 - integral_total;
+        double pi = integral_total * 4.0;  // Monte Carlo para pi: aproximación del área del círculo en el cuadrado de lado 1
 
         // Finalizar el contador de tiempo
         end_time = MPI_Wtime();
         double cpu_time_used = end_time - start_time;
 
         // Imprimir el resultado
-        printf("El valor de π es: %.15f\n", pi);
+        printf("El valor aproximado de π es: %.15f\n", pi);
         printf("Tiempo de ejecución: %f segundos\n", cpu_time_used);
-        printf("")
     }
 
     // Finalización del entorno MPI
@@ -58,33 +56,31 @@ int main(int argc, char* argv[]) {
 }
 
 /**
- * @brief Calcular la función del calculo de pi
+ * @brief Calcular la función del cálculo de pi
  * @param x Valor de x
  * @return Valor de la integral
-*/
-double operacionIntraIntegral(double x){
-    return ((x * x * x * x) * ((1-x) * (1-x) * (1-x) * (1-x)) ) / (1+x) * (1+x) ;
+ */
+double operacionIntraIntegral(double x) {
+    return ((x * x * x * x) * ((1 - x) * (1 - x) * (1 - x) * (1 - x))) / ((1 + x) * (1 + x));
 }
 
 /**
  * @brief Calcular la integral de una función mediante el método de Monte Carlo
- * @param function función a integrar
- * @param min Valor mínimo del intervalo
- * @param max Valor máximo del intervalo
- * @return Valor de la integral
-*/
-int integralMonteCarlo(int iteraciones){
-    // Para asegurarnos que en cada ejecución del método montecarlo se generen números aleatorios diferentes, utilizamos el PID del programa
-    srand(getpid());
-    int aciertos=0;
+ * @param iteraciones Número de iteraciones
+ * @return Aproximación de la integral
+ */
+double integralMonteCarlo(int iteraciones) {
+    srand(getpid());  // Semilla diferente para cada proceso
+    int aciertos = 0;
     
-    for(int i = 0; i < iteraciones; i++){
+    for (int i = 0; i < iteraciones; i++) {
         // Generar un número aleatorio entre 0 y 1
         double x = (double)rand() / RAND_MAX;
         double y = (double)rand() / RAND_MAX;
         
-        if(operacionIntraIntegral(x) > y) aciertos++;
+        if (operacionIntraIntegral(x) > y) aciertos++;
     }
 
-    return aciertos;
+    // La integral es la proporción de aciertos respecto al número de iteraciones
+    return (double)aciertos / iteraciones;
 }
