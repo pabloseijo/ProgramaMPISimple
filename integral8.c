@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
         // Imprimir el resultado
         printf("El valor de π es: %.15f\n", pi);
         printf("Tiempo de ejecución: %f segundos\n", cpu_time_used);
+        printf("")
     }
 
     // Finalización del entorno MPI
