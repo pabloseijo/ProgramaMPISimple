@@ -1,0 +1,62 @@
+\documentclass[conference, a4paper]{IEEEtran}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref} % Para enlaces y referencias cruzadas
+\usepackage{fancyhdr} % Para controlar los encabezados y pies de página
+
+% Agregar números de página
+\pagestyle{plain}
+
+\begin{document}
+
+\title{Título del Paper}
+\author{
+    \IEEEauthorblockN{Tu Nombre}
+    \IEEEauthorblockA{\\Departamento de Investigación\\
+    Nombre de la Institución\\
+    Ciudad, País\\
+    Email: tu.email@ejemplo.com}
+}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+En este resumen se proporciona una visión general de los principales objetivos, métodos y hallazgos de la investigación. El resumen debe ser conciso, entre 150 y 250 palabras, y ofrecer una descripción clara del propósito y los resultados de la investigación.
+\end{abstract}
+
+% Agregar las palabras clave
+\begin{IEEEkeywords}
+Palabras clave, IEEE, formato, investigación científica.
+\end{IEEEkeywords}
+
+\section{Introducción}
+En la sección de introducción, debes presentar el contexto y la importancia de tu investigación. Aquí es donde justificas la relevancia del problema abordado, explicas el estado del arte, y defines claramente el objetivo del trabajo. Se recomienda hacer referencias a trabajos previos relacionados con tu investigación \cite{referencia1}.
+
+\section{Metodología}
+Esta sección describe los métodos y procedimientos empleados en tu investigación. Detalla cómo se llevaron a cabo los experimentos, análisis o simulaciones, y qué herramientas o técnicas se utilizaron para alcanzar los resultados. También debes explicar por qué elegiste esos métodos y su relación con los objetivos de la investigación.
+
+\section{Resultados}
+En esta sección se presentan los resultados obtenidos durante el desarrollo de tu investigación. Se pueden usar tablas, gráficos y descripciones detalladas para mostrar los hallazgos de manera clara. Asegúrate de que los resultados sean reproducibles y que los datos estén organizados adecuadamente.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{figura_ejemplo.png}}
+\caption{Descripción de la figura.}
+\label{figura1}
+\end{figure}
+
+\section{Conclusiones}
+En las conclusiones, se hace un resumen de los principales hallazgos de tu trabajo. Además, puedes incluir posibles aplicaciones de los resultados, las limitaciones de la investigación y las recomendaciones para trabajos futuros.
+
+\section*{Agradecimientos}
+Esta sección es opcional y se usa para agradecer a las personas o instituciones que contribuyeron de alguna forma al desarrollo de la investigación, como financiamiento o asistencia técnica.
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliografia}
+
+\end{document}

@@ -8,7 +8,7 @@
 #define iteraciones_totales_montecarlo 10000000
 
 double operacionIntraIntegral(double x);
-
+int integralMonteCarlo(int iteraciones);
 
 int main(int argc, char* argv[]) {
     int rank, size;
@@ -26,18 +26,20 @@ int main(int argc, char* argv[]) {
     // Iniciar el contador de tiempo
     start_time = MPI_Wtime();
 
+    int iteraciones_por_proceso = iteraciones_totales_montecarlo / size;
     // Cada proceso realiza una parte de las iteraciones
-    int iteraciones_por_proceso = iteraciones / size;
-    double integral_local = integralMonteCarlo(iteraciones_por_proceso);
+    int integral_local = integralMonteCarlo(iteraciones_por_proceso);
 
     // Recopilar resultados parciales de cada proceso
     double integral_total = 0.0;
-    MPI_Reduce(&integral_local, &integral_total, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&integral_local, &integral_total, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
+    integral_total /= iteraciones_totales_montecarlo;  
 
     if (rank == 0) {
         // Calcular el valor de pi a partir de la integral total
         integral_total /= size;  // Dividimos por el número de procesos para obtener la media
-        double pi = (double)22 / 7 - integral_total;
+        double pi = (double) 22 / 7 - integral_total;
 
         // Finalizar el contador de tiempo
         end_time = MPI_Wtime();
@@ -70,7 +72,7 @@ double operacionIntraIntegral(double x){
  * @param max Valor máximo del intervalo
  * @return Valor de la integral
 */
-double integralMonteCarlo(int iteraciones){
+int integralMonteCarlo(int iteraciones){
     // Para asegurarnos que en cada ejecución del método montecarlo se generen números aleatorios diferentes, utilizamos el PID del programa
     srand(getpid());
     int aciertos=0;
@@ -83,5 +85,5 @@ double integralMonteCarlo(int iteraciones){
         if(operacionIntraIntegral(x) > y) aciertos++;
     }
 
-    return (double)aciertos/iteraciones;
+    return aciertos;
 }
