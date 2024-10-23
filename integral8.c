@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 
     if (rank == 0) {
         // Calcular el valor de pi a partir de la integral total
-        double pi = integral_total * 4.0;  // Monte Carlo para pi: aproximación del área del círculo en el cuadrado de lado 1
+        double pi = (double) 22/7 - integral_total;  // Monte Carlo para pi: aproximación del área del círculo en el cuadrado de lado 1
 
         // Finalizar el contador de tiempo
         end_time = MPI_Wtime();
