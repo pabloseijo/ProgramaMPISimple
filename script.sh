@@ -28,11 +28,15 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+rm "salida.txt"
+
 # Ejecutar el programa con diferentes números de procesos (de 1 a 8)
 for PROC in $(seq 1 8); do
-    echo "Ejecutando con $PROC proceso(s):"
-    mpirun -np $PROC ./$EXECUTABLE
-    echo ""
+    for ITER in $(seq 100000 100000 1000000); do
+        echo "Ejecutando con $PROC proceso(s):"
+        mpirun -np $PROC ./$EXECUTABLE $ITER "salida.txt"
+        echo ""
+    done
 done
 
 echo "Done"   # Write a message to the output file

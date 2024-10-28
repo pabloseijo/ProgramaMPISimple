@@ -5,14 +5,14 @@
 #include <unistd.h>
 #include <mpi.h>     
 
-#define iteraciones_totales_montecarlo 10000000
-
 double operacionIntraIntegral(double x);
 double integralMonteCarlo(int iteraciones);
 
 int main(int argc, char* argv[]) {
     int rank, size;
     double start_time, end_time;
+
+    int iteraciones_totales_montecarlo=atoi(argv[1]);
 
     // Inicialización del entorno MPI
     MPI_Init(&argc, &argv);
@@ -34,12 +34,14 @@ int main(int argc, char* argv[]) {
     double integral_total = 0.0;
     MPI_Reduce(&integral_local, &integral_total, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
-    integral_total /= iteraciones_totales_montecarlo;  
+      
 
     if (rank == 0) {
         // Calcular el valor de pi a partir de la integral total
-        double pi = (double) 22/7 - integral_total;  // Monte Carlo para pi: aproximación del área del círculo en el cuadrado de lado 1
-
+        //double pi;(double) 22/7 - integral_total;  // Monte Carlo para pi: aproximación del área del círculo en el cuadrado de lado 1
+        integral_total /=size;       
+        double pi=(double)22/7-integral_total;
+	
         // Finalizar el contador de tiempo
         end_time = MPI_Wtime();
         double cpu_time_used = end_time - start_time;
@@ -47,6 +49,8 @@ int main(int argc, char* argv[]) {
         // Imprimir el resultado
         printf("El valor aproximado de π es: %.15f\n", pi);
         printf("Tiempo de ejecución: %f segundos\n", cpu_time_used);
+	FILE* salida=fopen(argv[2],"a");
+	fprintf(salida,"%d %d %lf %lf %d\n",size,iteraciones_totales_montecarlo, pi, cpu_time_used, 7);
     }
 
     // Finalización del entorno MPI
@@ -82,5 +86,5 @@ double integralMonteCarlo(int iteraciones) {
     }
 
     // La integral es la proporción de aciertos respecto al número de iteraciones
-    return (double)aciertos / iteraciones;
+    return (double)aciertos/iteraciones;
 }
