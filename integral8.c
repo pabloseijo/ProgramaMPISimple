@@ -12,15 +12,36 @@
 //SpeedUp = Tsec/Tparalelo (menor o igual nprocesos)
 //Eficiencia = SpeedUp/nprocesos (menor o igual que 1)
 
-double operacionIntraIntegral(double x);
-double integralMonteCarlo(long iter);
+double i1(long iter);
+double i2(long iter);
+double i3(long iter);
+double i4(long iter);
+double i5(long iter);
+double i6(long iter);
+double i7(long iter);
+double i8(long iter);
+double i9(long iter);
+double i10(long iter);
+double f1(double local_data);
+double f2(double local_data);
+double f3(double local_data);
+double f4(double local_data);
+double f5(double local_data);
+double f6(double local_data);
+double f7(double local_data);
+double f8(double local_data);
+double f9(double local_data);
+double f10(double local_data);
+long  factorial(long n);
 
 int main(int argc, char* argv[]) {
   int rank, size,step=1,metodoElegido=atoi(argv[3]);
     double start_time, end_time;
 
-    double (*operacionIterativa[9])(long);
-    double (*completarOperacion[9])(double);
+    double (*operacionIterativa[11])(long) = {NULL, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10};
+    double (*completarOperacion[11])(double) = {NULL, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10};
+
+   
 
     long iteraciones_totales_montecarlo=atoi(argv[1]);
 
