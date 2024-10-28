@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
         //printf("El valor aproximado de π es: %.15f\n", pi);
         //printf("Tiempo de ejecución: %f segundos\n", cpu_time_used);
 	FILE* salida = fopen(argv[2],"a");
-	fprintf(salida,"%d %ld %lf %lf %d\n",size,iteraciones_totales_montecarlo, pi, cpu_time_used, 7);
+	fprintf(salida,"%d %ld %lf %lf %d\n",size,iteraciones_totales_montecarlo, pi, cpu_time_used, metodoElegido);
     }
 
     // Finalización del entorno MPI
