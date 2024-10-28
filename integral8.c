@@ -14,8 +14,11 @@ double operacionIntraIntegral(double x);
 double integralMonteCarlo(long iteraciones);
 
 int main(int argc, char* argv[]) {
-    int rank, size,step=1;
+  int rank, size,step=1,metodoElegido=atoi(argv[3]);
     double start_time, end_time;
+
+    double (*operacionIterativa[9])(long);
+    double (*completarOperacion[9])(double);
 
     long iteraciones_totales_montecarlo=atoi(argv[1]);
 
