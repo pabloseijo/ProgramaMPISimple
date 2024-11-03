@@ -21,6 +21,9 @@ single_process_times = data[data['procesos'] == 1].set_index('iteraciones')['tie
 data['speed_up'] = data.apply(lambda row: min(single_process_times[row['iteraciones']] / row['tiempo_ejecucion'], row['procesos']) if row['procesos'] > 1 else 1, axis=1)
 data['eficiencia'] = data['speed_up'] / data['procesos']
 
+# Calcular medias agrupadas por iteraciones
+mean_data = data.groupby('iteraciones').mean().reset_index()
+
 # Graficar el Error en la Aproximación de π vs Número de Iteraciones
 plt.figure(figsize=(10, 6))
 for proceso in data['procesos'].unique():
@@ -63,4 +66,44 @@ plt.xlabel('Número de Iteraciones')
 plt.ylabel('Eficiencia')
 plt.title('Eficiencia vs Número de Iteraciones')
 plt.grid(True)
+plt.show()
+
+# Graficar la media del Error en la Aproximación de π vs Número de Iteraciones
+plt.figure(figsize=(10, 6))
+plt.plot(mean_data['iteraciones'], mean_data['error'], label='Media de Error')
+plt.xlabel('Número de Iteraciones')
+plt.ylabel('Media del Error en la Aproximación de π')
+plt.title('Media del Error en la Aproximación de π vs Número de Iteraciones')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Graficar la media de la Calidad del Resultado vs Número de Iteraciones
+plt.figure(figsize=(10, 6))
+plt.plot(mean_data['iteraciones'], mean_data['calidad'], label='Media de Calidad')
+plt.xlabel('Número de Iteraciones')
+plt.ylabel('Media de Calidad del Resultado (C)')
+plt.title('Media de Calidad del Resultado vs Número de Iteraciones')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Graficar la media del Speed-up vs Número de Iteraciones
+plt.figure(figsize=(10, 6))
+plt.plot(mean_data['iteraciones'], mean_data['speed_up'], label='Media de Speed-up')
+plt.xlabel('Número de Iteraciones')
+plt.ylabel('Media del Speed-up')
+plt.title('Media del Speed-up vs Número de Iteraciones')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Graficar la media de la Eficiencia vs Número de Iteraciones
+plt.figure(figsize=(10, 6))
+plt.plot(mean_data['iteraciones'], mean_data['eficiencia'], label='Media de Eficiencia')
+plt.xlabel('Número de Iteraciones')
+plt.ylabel('Media de Eficiencia')
+plt.title('Media de Eficiencia vs Número de Iteraciones')
+plt.grid(True)
+plt.legend()
 plt.show()
