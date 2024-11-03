@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 pi_reference = 3.1415926535897932384626433832795028841971693993751058209749446
 
 # Leer el archivo
-data = pd.read_csv('salida1', sep=" ", header=None, names=["procesos", "iteraciones", "pi_valor", "tiempo_ejecucion", "formula"])
+data = pd.read_csv('../resultados/salida1', sep=" ", header=None, names=["procesos", "iteraciones", "pi_valor", "tiempo_ejecucion", "formula"])
 
 # Calcular el error en la aproximación de π
 data['error'] = np.abs(data['pi_valor'] - pi_reference)
