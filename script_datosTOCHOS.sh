@@ -9,7 +9,7 @@
 #SBATCH -N 2                     # Total number of nodes requested
 #SBATCH -n 32                     # Total number of mpi tasks requested
 #SBATCH --ntasks-per-node=16      # Number of tasks per node (for example 4 tasks per node)
-#SBATCH -t 20:00:00              # Run time (hh:mm:ss) - here 10 minutes
+#SBATCH -t 24:00:00              # Run time (hh:mm:ss) - here 10 minutes
 #SBATCH --mem=1G                 # Memory per core
 
 # Load necessary modules for compilation and execution
