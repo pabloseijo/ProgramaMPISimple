@@ -1,6 +1,6 @@
 # MPI Program for Estimating Pi Using the Monte Carlo Method
 
-This repository hosts an MPI-based C program for estimating the value of \(\pi\) using the Monte Carlo method. The program leverages parallel computation with MPI, distributing tasks across multiple processes to enhance performance. It includes metrics to evaluate efficiency, speedup, and result quality under different configurations.
+This repository hosts an MPI-based C program for estimating the value of π using the Monte Carlo method. The program leverages parallel computation with MPI, distributing tasks across multiple processes to enhance performance. It includes metrics to evaluate efficiency, speedup, and result quality under different configurations.
 
 ## Table of Contents
 - [Overview](#overview)
@@ -14,11 +14,11 @@ This repository hosts an MPI-based C program for estimating the value of \(\pi\)
 
 ## Overview
 
-The objective of this project is to implement and analyze a parallel program that estimates \(\pi\) using the Monte Carlo method. The program evaluates performance through metrics like execution time, efficiency, and quality under various configurations, demonstrating how MPI-based parallelism improves computationally intensive tasks.
+The objective of this project is to implement and analyze a parallel program that estimates π using the Monte Carlo method. The program evaluates performance through metrics like execution time, efficiency, and quality under various configurations, demonstrating how MPI-based parallelism improves computationally intensive tasks.
 
 ## Features
 
-- Parallel computation of \(\pi\) using the Monte Carlo method.
+- Parallel computation of π using the Monte Carlo method.
 - Configurable number of iterations and processes to analyze scalability.
 - Performance metrics including efficiency, speedup, and quality.
 
