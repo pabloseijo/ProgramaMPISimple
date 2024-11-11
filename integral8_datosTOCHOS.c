@@ -10,14 +10,14 @@
 //SpeedUp = Tsec/Tparalelo (menor o igual nprocesos)
 //Eficiencia = SpeedUp/nprocesos (menor o igual que 1)
 
-double operacionIntraIntegral(double x);
-double integralMonteCarlo(long iteraciones);
+long double operacionIntraIntegral(long double x);
+long double integralMonteCarlo(long long iteraciones);
 
 int main(int argc, char* argv[]) {
     int rank, size,step=1;
     double start_time, end_time;
 
-    long iteraciones_totales_montecarlo=atoi(argv[1]);
+    long long iteraciones_totales_montecarlo=atoll(argv[1]);
 
     // Inicialización del entorno MPI
     MPI_Init(&argc, &argv);
@@ -28,23 +28,23 @@ int main(int argc, char* argv[]) {
     // Iniciar el contador de tiempo
     start_time = MPI_Wtime();
 
-    long iteraciones_por_proceso = iteraciones_totales_montecarlo / size;
+    long long iteraciones_por_proceso = iteraciones_totales_montecarlo / size;
     // Cada proceso realiza una parte de las iteraciones
-    double local_data  = integralMonteCarlo(iteraciones_por_proceso);
+    long double local_data  = integralMonteCarlo(iteraciones_por_proceso);
 
     // Recopilar resultados parciales de cada proceso
     while (step < size) {
         if (rank % (2 * step) == 0) {
             // Los procesos en posiciones múltiplos de 2*step reciben datos
             if (rank + step < size) {
-                double received_data;
-                MPI_Recv(&received_data, 1, MPI_DOUBLE, rank + step, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                long double received_data;
+                MPI_Recv(&received_data, 1, MPI_LONG_DOUBLE, rank + step, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 local_data += received_data;  // Aquí puedes combinar datos o almacenarlos en un array
             }
         } else {
             // Los otros procesos envían sus datos y salen del bucle
             int target = rank - step;
-            MPI_Send(&local_data, 1, MPI_DOUBLE, target, 0, MPI_COMM_WORLD);
+            MPI_Send(&local_data, 1, MPI_LONG_DOUBLE, target, 0, MPI_COMM_WORLD);
             break;
         }
         step *= 2;  // Aumentar el rango de la distancia en el árbol binario
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
     if (rank == 0) {
         // Calcular el valor de pi a partir de la integral total
         local_data /= size;       
-        double pi = (double)22/7 - local_data;
+        long double pi = (long double)22/7 - local_data;
 	
         // Finalizar el contador de tiempo
         end_time = MPI_Wtime();
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
         //printf("El valor aproximado de π es: %.15f\n", pi);
         //printf("Tiempo de ejecución: %f segundos\n", cpu_time_used);
 	FILE* salida = fopen(argv[2],"a");
-	fprintf(salida,"%d %ld %lf %lf %d\n",size,iteraciones_totales_montecarlo, pi, cpu_time_used, 7);
+	fprintf(salida,"%d %lld %.20Lf %lf %d\n",size,iteraciones_totales_montecarlo, pi, cpu_time_used, 7);
     }
 
     // Finalización del entorno MPI
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
  * @param x Valor de x
  * @return Valor de la integral
  */
-double operacionIntraIntegral(double x) {
+long double operacionIntraIntegral(long double x) {
     return ((x * x * x * x) * ((1 - x) * (1 - x) * (1 - x) * (1 - x))) / ((1 + x) * (1 + x));
 }
 
@@ -88,11 +88,10 @@ double operacionIntraIntegral(double x) {
  * @param iteraciones Número de iteraciones
  * @return Aproximación de la integral
  */
-double integralMonteCarlo(long iteraciones) {
+long double integralMonteCarlo(long long iteraciones) {
     srand(getpid());  // Semilla diferente para cada proceso
-    int aciertos = 0;
-    
-    for (long i = 0; i < iteraciones; i++) {
+    long long aciertos = 0;    
+    for (long long i = 0; i < iteraciones; i++) {
         // Generar un número aleatorio entre 0 y 1
         double x = (double)rand() / RAND_MAX;
         double y = (double)rand() / RAND_MAX;
@@ -101,5 +100,5 @@ double integralMonteCarlo(long iteraciones) {
     }
 
     // La integral es la proporción de aciertos respecto al número de iteraciones
-    return (double)aciertos/iteraciones;
+    return (long double)aciertos/iteraciones;
 }
